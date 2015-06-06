@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+	"http://struts.apache.org/dtds/struts-2.1.7.dtd">
+	
+	<struts>
+	<!-- 配置为开发模式 -->
+	<constant name="struts.devMode" value="true"></constant>
+	<!-- 配置简单模式 -->
+	<constant name="struts.ui.theme" value="simple"></constant>
+	<!-- 加了这个请求路径就要加上/system -->
+		<package name="system" namespace="/struts/system" extends="struts-default">
+		<!-- 测试页面    action="system/Login_login.action"  因为namespace="/system"-->
+			<action name="Login_*" class="mars.web.action.LoginAction" method="{1}">
+			<result name="okyouhaslogin">
+			/jsp/strutstest/struts.jsp
+			</result>
+			</action>
+		</package>
+		
+		<package name="bootstrap" namespace="/struts/bootstrap" extends="struts-default">
+		<!-- 测试页面    action="bootstrap/Login_login.action"  因为namespace="/bootstrap"-->
+			<action name="Bootstrap_*" class="mars.web.action.bootstrap.Bootstrap" method="{1}">
+			<result name="test">
+			/jsp/bootstrap/test.jsp
+			</result>
+			<result name="bs15">
+			/jsp/bootstrap/learn/1_5.jsp
+			</result>
+			<result name="bs16">
+			/jsp/bootstrap/learn/1_6.jsp
+			</result>
+			</action> 
+		</package>
+	
+	
+	</struts>

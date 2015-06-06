@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config>
+	<mapConfig>
+		<id>mapDiv</id>
+		<gisEngine>02</gisEngine>
+		<urlArray>
+			<name>xmgis</name>
+			<url>http://192.168.204.19:8090/iserver/services/map-xmgis/rest/maps/xmgis</url>
+		</urlArray>
+		<urlArray>
+			<name>xmcust</name>
+			<url>http://192.168.204.19:8090/iserver/services/map-xmgis/rest/maps/xmcust</url>
+		</urlArray>
+	</mapConfig>
+	<locationConfig>
+		<style>
+			<background>/ecssp/jslib/evecomgis/common/image/box_2.png</background>
+			<height>20</height>
+			<width>20</width>
+		</style>
+		<isPopup>true</isPopup>
+		<callback>testWin</callback>
+	</locationConfig>
+	<queryMapConfig>
+		<queryLayerUrl>http://192.168.204.19:8090/iserver/services/map-xmgis/rest/maps/xmcust</queryLayerUrl>
+		<queryLayerSet>
+			<layerName>行政地名_point@xmgis</layerName>
+			<attrId>SMID</attrId>
+			<attrName>NAME</attrName>
+			<attrX>SMX</attrX>
+			<attrY>SMY</attrY>
+		</queryLayerSet>
+	</queryMapConfig>
+	<measureConfig>
+		<url>http://192.168.204.19:8090/iserver/services/map-xmgis/rest/maps/xiamen</url>
+		<pointStyle>
+			<pointRadius>5</pointRadius>
+			<fillOpacity>0.5</fillOpacity>
+			<fillColor>#FF0000</fillColor>
+			<stroke>true</stroke>
+			<strokeColor>#FFFFFF</strokeColor>
+			<strokeOpacity>0.6</strokeOpacity>
+			<strokeWidth>4</strokeWidth>
+		</pointStyle>
+		<lineStyle>
+			<strokeColor>#FF0000</strokeColor>
+		</lineStyle>
+		<clear>false</clear>
+	</measureConfig>
+	<graphicConfig>
+		<lineType>solid</lineType>
+		<color>#FF0000</color>
+		<width>2</width>
+	</graphicConfig>
+</config>

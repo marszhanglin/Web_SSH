@@ -1,0 +1,55 @@
+﻿.sm_legendDiv{
+	color:#131313;
+	position:relative;
+}
+.sm_legendLayer {
+	padding-bottom : 20px;
+	padding-top: 10px;
+}
+.sm_legendLayerName{
+	font-size:15px;
+	font-weight:bold;
+	padding-left:8px;
+}
+.sm_legendLayerLable{
+	font-size:12px;
+	padding-top:10px;
+}
+
+.sm_legendLayerRow_block{
+	cursor:pointer;
+	padding-left:5px;
+	width:120%;
+}
+.sm_legendLayerRow_none{
+	cursor:pointer;
+	padding-left:5px;
+	width:120%;
+}
+.sm_placeCell{
+	width:9px;
+}
+.sm_placeCell_block{
+	background :url(../images/controls/plus.png) no-repeat center;
+	width:9px;
+}
+.sm_placeCell_none{
+	background :url(../images/controls/minus.png) no-repeat center;
+	width:9px;
+}
+.sm_placeLineCell{
+	background:url(../images/controls/line.gif) repeat-y;
+	width:13px;
+}
+.sm_lineCell{
+	background:url(../images/controls/line.gif) repeat-y;
+	width:13px;
+}
+.sm_legendLayerNameControlCell_block{
+	background :url(../images/controls/minus.png) no-repeat center;
+	width:9px;
+}
+.sm_legendLayerNameControlCell_none{
+	background :url(../images/controls/plus.png) no-repeat center;
+	width:9px;
+}

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
+  <!-- SSH_01的web.xml -->
+  
+  <!-- spring配置文件路径配置 -->
+  <context-param>
+	    <param-name>contextConfigLocation</param-name>
+	    <param-value>/WEB-INF/spring/spring-*.xml</param-value>
+  </context-param>
+  
+  
+  <!-- （http://localhost:8081/SSH_01/）这么请求时跑到这个页面 -->
+  <servlet>
+  <servlet-name>defaut</servlet-name>
+  <jsp-file>/default.jsp</jsp-file>
+  </servlet>
+  
+  <!-- <servlet>必须位于对应<servlet-mapping>前面 -->
+  <servlet>
+  <!-- 这个<servlet-name>作用是为了标记与那个<servlet-mapping>对应 -->
+  <servlet-name>testservlet</servlet-name>
+  <!-- servlet的全路径 -->
+  <servlet-class>text.ServletText</servlet-class>
+  <!--  load-on-startup元素标记容器(tomcat)是否在启动的时候就加载这个servlet(实例化并调用其init()方法)。
+       1，2，3，4，5表示servlet应该被载入的顺序，而非启动延迟时间。 -->
+  <load-on-startup>1</load-on-startup>
+  
+  </servlet>
+  
+  
+  
+  <servlet-mapping>
+  <servlet-name>testservlet</servlet-name>
+  <!-- ① 完全匹配<url-pattern>/test/list.do</url-pattern>  
+  	   ② 路径匹配<url-pattern>/*</url-pattern> struts2匹配根路径下的全部请求
+       ③ 扩展名匹配 <url-pattern>*.do</url-pattern> struts1
+                <url-pattern>*.html</url-pattern> 匹配全部html结尾的请求
+       这里采用完全匹配请求路径《《《《需要注意的是我们这里匹配的是请求》》》》
+   -->
+  <url-pattern>/text</url-pattern>
+  </servlet-mapping>
+  
+  
+  
+  
+  
+  <!-- struts过滤器      注意struts过滤器不要放在其他filter或servlet前面 -->
+   <filter>
+  <filter-name>struts2</filter-name>
+  <filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>
+  </filter>
+  <filter-mapping>
+  <filter-name>struts2</filter-name>
+  <url-pattern>/struts/*</url-pattern>
+  </filter-mapping> 
+  
+  
+  
+  
+  
+  <!-- spring监听   当容器跑起来时spring也跑起来-->
+  <listener>  
+        <listener-class>  
+            org.springframework.web.context.ContextLoaderListener  
+        </listener-class>  
+    </listener>
+  
+  
+  <!-- 第二种方式启动mina 当没有Spring时我们要在容器启动时自己启动mina   两种只能选一种（所以我把spring中的mina注掉）    -->
+  <listener>  
+        <listener-class>  
+            listener.MinaInitListener
+        </listener-class>  
+    </listener>
+  
+  
+  <!--找不到路径时访问  http://localhost:8082/SSH_01/ 元素指示服务器在收到引用一个目录名而不是文件名的URL时，使用哪个文件-->
+  <welcome-file-list>
+  <!-- 这个路径是WebRoot下 -->
+    <welcome-file>index2.jsp</welcome-file>
+  </welcome-file-list>
+  
+  <!-- 状态为404时访问的文件 -->
+  <error-page>
+    <error-code>404</error-code>
+    <location>/error/404.jsp</location>
+  </error-page>
+  <!-- 状态为500时访问的文件 -->
+  <error-page>
+    <error-code>500</error-code>
+    <location>/error/500.jsp</location>
+  </error-page>
+  <!-- session的过期时间  这里是60分 -->
+  <session-config>
+    <session-timeout>60</session-timeout>
+  </session-config>
+</web-app>

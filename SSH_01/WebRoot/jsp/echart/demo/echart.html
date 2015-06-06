@@ -1,0 +1,73 @@
+﻿<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title>ECharts</title>
+</head>
+<body> 
+    <div id="main" style="height:300px ;width: 500px;"></div>  
+    <script src="./dist/echarts.js" charset="UTF-8"></script>
+    <script type="text/javascript"> 
+        require.config({
+            paths: {
+                echarts: './dist'
+            }
+        }); 
+        require(
+            [
+                'echarts',
+                'echarts/chart/line'  
+            ],
+            function (ec) {
+                var myChart = ec.init(document.getElementById('main'),'infographic'); 
+                
+                var option =   { 
+    backgroundColor:'#000000',
+    tooltip : {
+        trigger: 'axis'
+    },
+    legend: {
+        data:['2013隐患排查','2014隐患排查'],
+		textStyle:{color: '#ffffff'}
+    } ,
+    calculable : true,
+    xAxis : [
+        {
+            type : 'category',
+            boundaryGap : false,
+            data : ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月']
+        }
+    ],
+    yAxis : [
+        {
+            type : 'value',
+            axisLabel : {
+                formatter: '{value} 次'
+            }
+        }
+    ],
+    series : [
+        {
+            name:'2013隐患排查',
+            type:'line',
+            data:[707, 231, 655, 582, 386, 531, 1156, 1893 , 2051, 1782, 2671, 3493],
+             lineStyle: {color:'#aa0000'}
+             
+        },
+        {
+            name:'2014隐患排查',
+            type:'line',
+            data:[532, 229, 427, 326, 257, 323, 316, 355 , 297, 361, 673, 630],
+          
+             
+        }
+    ]
+};
+ 
+
+         
+                myChart.setOption(option);  
+            }
+        );
+    </script>
+	 
+</body>

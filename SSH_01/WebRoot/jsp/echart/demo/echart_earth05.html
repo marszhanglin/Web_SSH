@@ -1,0 +1,510 @@
+﻿<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title>ECharts</title>
+</head>
+<body> 
+    <div id="main" style="height:600px ;width: 1000px;"></div>  
+    <script src="./dist/echarts.js" charset="UTF-8"></script>
+	 <script src="./asset/js/jquery.min.js"></script>
+    <script type="text/javascript"> 
+        require.config({
+            paths: {
+                echarts: './dist',
+				'echarts/chart/map':'./dist/chart/map'  
+            }
+        });  
+        require(
+            [
+                'echarts',
+                'echarts/chart/map'  
+            ],
+            function (ec) {
+                var myChart = ec.init(document.getElementById('main'),'mint');  
+				
+				 var cityMap = { 
+					"福州市": "350100",
+					"厦门市": "350200",
+					"莆田市": "350300",
+					"三明市": "350400",
+					"泉州市": "350500",
+					"漳州市": "350600",
+					"南平市": "350700",
+					"龙岩市": "350800",
+					"宁德市": "350900" 
+				};
+
+
+				var curIndx = 0;
+				var mapType = [];
+				var mapGeoData = require('echarts/util/mapData/params');
+				console.log(mapGeoData)
+				for (var city in cityMap) {
+					mapType.push(city);
+					// 自定义扩展图表类型
+					mapGeoData.params[city] = {
+						getGeoJson: (function (c) {
+							var geoJsonName = cityMap[c];
+							return function (callback) {
+								$.getJSON('geoJson/china-main-city/' + geoJsonName + '.json', callback);
+							}
+						})(city)
+					}
+				}
+
+				var ecConfig = require('echarts/config');
+				var zrEvent = require('zrender/tool/event');
+				myChart.on(ecConfig.EVENT.MAP_SELECTED, function (param){
+					var selected = param.target;
+					var hasincitys=false;
+					for(var i=0;i<mapType.length;i++){
+						 if(mapType[i]===selected){
+							 	option.series[0].mapType =selected;
+							 	switch (selected) {
+								case "福州市":
+									option.series[0].markPoint.data=[
+		                                 	{name: "鼓楼区", value: 9},
+						                    {name: "仓山区", value: 12},
+						                    {name: "长乐市", value: 12},
+						                    {name: "福清市", value: 12},
+						                    {name: "晋安区", value: 14},
+						                    {name: "连江县", value: 15},
+						                    {name: "罗源县", value: 16},
+						                    {name: "马尾区", value: 18},
+						                    {name: "闽清县", value: 18} ,
+						                    {name: "平潭县", value: 12},
+						                    {name: "台江区", value: 12},
+						                    {name: "永泰县", value: 14},
+						                    {name: "闽侯县", value: 14}];
+									break;
+								case "厦门市":
+									option.series[0].markPoint.data=[
+		                                 	{name: "海沧区", value: 9},
+						                    {name: "湖里区", value: 12},
+						                    {name: "集美区", value: 12},
+						                    {name: "思明区", value: 12},
+						                    {name: "同安区", value: 14},
+						                    {name: "翔安区", value: 15}];
+									break;
+								case "莆田市":
+									option.series[0].markPoint.data=[
+		                                 	{name: "城厢区", value: 9},
+						                    {name: "涵江区", value: 12},
+						                    {name: "荔城区", value: 12},
+						                    {name: "仙游县", value: 12},
+						                    {name: "秀屿区", value: 14}];
+									break;
+								case "三明市":
+									option.series[0].markPoint.data=[
+		                                 	{name: "大田县", value: 9},
+						                    {name: "建宁县", value: 12},
+						                    {name: "将乐县", value: 12},
+						                    {name: "梅列区", value: 12},
+						                    {name: "明溪县", value: 14},
+						                    {name: "宁化县", value: 15},
+						                    {name: "清流县", value: 16},
+						                    {name: "三元区", value: 18},
+						                    {name: "沙县", value: 18} ,
+						                    {name: "泰宁县", value: 12},
+						                    {name: "永安市", value: 12},
+						                    {name: "尤溪县", value: 14}];
+									break;
+								case "泉州市":
+									option.series[0].markPoint.data=[
+		                                 	{name: "泉港区", value: 9},
+						                    {name: "石狮市", value: 12},
+						                    {name: "安溪县", value: 12},
+						                    {name: "德化县", value: 12},
+						                    {name: "丰泽区", value: 14},
+						                    {name: "惠安县", value: 15},
+						                    {name: "金门县", value: 16},
+						                    {name: "晋江市", value: 18},
+						                    {name: "鲤城区", value: 18} ,
+						                    {name: "洛江区", value: 12},
+						                    {name: "南安市", value: 12},
+						                    {name: "永春县", value: 14}];
+									break;
+								case "漳州市":
+									option.series[0].markPoint.data=[
+		                                 	{name: "云霄县", value: 9},
+						                    {name: "长泰县", value: 12},
+						                    {name: "东山县", value: 12},
+						                    {name: "华安县", value: 12},
+						                    {name: "龙海市", value: 14},
+						                    {name: "龙文区", value: 15},
+						                    {name: "南靖县", value: 16},
+						                    {name: "平和县", value: 18},
+						                    {name: "漳浦县", value: 18} ,
+						                    {name: "诏安县", value: 12},
+						                    {name: "芗城区", value: 12}];
+									break;
+								case "南平市":
+									option.series[0].markPoint.data=[
+		                                 	{name: "光泽县", value: 9},
+						                    {name: "建阳市", value: 12},
+						                    {name: "建瓯市", value: 12},
+						                    {name: "浦城县", value: 12},
+						                    {name: "邵武市", value: 14},
+						                    {name: "顺昌县", value: 15},
+						                    {name: "松溪县", value: 16},
+						                    {name: "武夷山市", value: 18},
+						                    {name: "延平区", value: 18} ,
+						                    {name: "政和县", value: 12}];
+									break;
+								case "龙岩市":
+									option.series[0].markPoint.data=[
+		                                 	{name: "长汀县", value: 9},
+						                    {name: "连城县", value: 12},
+						                    {name: "上杭县", value: 12},
+						                    {name: "武平县", value: 12},
+						                    {name: "新罗区", value: 14},
+						                    {name: "永定县", value: 15},
+						                    {name: "漳平市", value: 16}];
+									break;
+								case "宁德市":
+									option.series[0].markPoint.data=[
+		                                 	{name: "福安市", value: 9},
+						                    {name: "福鼎市", value: 12},
+						                    {name: "古田县", value: 12},
+						                    {name: "屏南县", value: 12},
+						                    {name: "寿宁县", value: 14},
+						                    {name: "霞浦县", value: 15},
+						                    {name: "周宁县", value: 16},
+						                    {name: "柘荣县", value: 18},
+						                    {name: "蕉城区", value: 18}];
+									break;
+								default:
+									option.series[0].markPoint.data=[
+									{name: "福州市", value: 9,symbol: 'image://./images/_admin.png',symbolSize:18},
+				                    {name: "厦门市", value: 12,symbol: 'image://./images/_admin.png',symbolSize:18},
+				                    {name: "莆田市", value: 12,symbol: 'image://./images/_admin.png',symbolSize:18},
+				                    {name: "三明市", value: 12,symbol: 'image://./images/_admin.png',symbolSize:18},
+				                    {name: "泉州市", value: 14,symbol: 'image://./images/_admin.png',symbolSize:18},
+				                    {name: "漳州市", value: 15,symbol: 'image://./images/_admin.png',symbolSize:18},
+				                    {name: "南平市", value: 16,symbol: 'image://./images/_admin.png',symbolSize:18},
+				                    {name: "龙岩市", value: 18,symbol: 'image://./images/_admin.png',symbolSize:18},
+				                    {name: "宁德市", value: 18,symbol: 'image://./images/_admin.png',symbolSize:18}];
+									break;
+								}
+							 	
+							 	
+								myChart.setOption(option, true);
+								hasincitys=true;
+								break;
+						 }
+					}
+					if(hasincitys===false){
+						option.series[0].mapType ="福建";
+						option.series[0].markPoint.data=[
+							{name: "福州市", value: 9,symbol: 'image://./images/_admin.png',symbolSize:18},
+		                    {name: "厦门市", value: 12,symbol: 'image://./images/_admin.png',symbolSize:18},
+		                    {name: "莆田市", value: 12,symbol: 'image://./images/_admin.png',symbolSize:18},
+		                    {name: "三明市", value: 12,symbol: 'image://./images/_admin.png',symbolSize:18},
+		                    {name: "泉州市", value: 14,symbol: 'image://./images/_admin.png',symbolSize:18},
+		                    {name: "漳州市", value: 15,symbol: 'image://./images/_admin.png',symbolSize:18},
+		                    {name: "南平市", value: 16,symbol: 'image://./images/_admin.png',symbolSize:18},
+		                    {name: "龙岩市", value: 18,symbol: 'image://./images/_admin.png',symbolSize:18},
+		                    {name: "宁德市", value: 18,symbol: 'image://./images/_admin.png',symbolSize:18}];
+						myChart.setOption(option, true);
+					}
+					/* if(selected!="福建"){ 
+						option.series[0].mapType ="莆田市";
+						myChart.setOption(option, true);
+					}else{
+						option.series[0].mapType ="福建";
+						myChart.setOption(option, true);
+					}  */
+					/* curIndx++;
+					var mt = mapType[curIndx % mapType.length];
+					option.series[0].mapType = mt;
+					option.title.subtext = mt + ' （滚轮或点击切换）';
+					myChart.setOption(option, true); */
+				});
+				option = {
+					title: {
+						text : '福建省1', 
+						subtext : '各个市1(县)'
+					},
+					tooltip : {
+						trigger: 'item',
+						formatter: '当前城市<br/>{b}'
+					},
+					series : [
+						{
+							name: '福建省主要城市（县）地图',
+							type: 'map',
+							mapType: '福建',
+							selectedMode : 'single',
+							itemStyle:{
+								normal:{label:{show:true}},
+								emphasis:{label:{show:true}}
+							},
+							data:[],
+							markPoint : {
+				                symbolSize: 5,       // 标注大小，半宽（半径）参数，当图形为方向或菱形则总宽度为symbolSize * 2
+				                itemStyle: {
+				                    normal: {
+				                        borderColor: '#87cefa',
+				                        borderWidth: 1,            // 标注边线线宽，单位px，默认为1
+				                        label: {
+				                            show: false
+				                        }
+				                    },
+				                    emphasis: {
+				                        borderColor: '#1e90ff',
+				                        borderWidth: 5,
+				                        label: {
+				                            show: false
+				                        }
+				                    }
+				                },  
+				                data : [
+				                        //市级
+				                    {name: "福州市", value: 9,symbol: 'image://./images/_admin.png',symbolSize:18},
+				                    {name: "厦门市", value: 12,symbol: 'star'},
+				                    {name: "莆田市", value: 12,symbol: 'star'},
+				                    {name: "三明市", value: 12,symbol: 'star'},
+				                    {name: "泉州市", value: 14,symbol: 'star'},
+				                    {name: "漳州市", value: 15,symbol: 'star'},
+				                    {name: "南平市", value: 16,symbol: 'star'},
+				                    {name: "龙岩市", value: 18,symbol: 'star'},
+				                    {name: "宁德市", value: 18,symbol: 'star'}, 
+				                    /* 
+				                    
+				                    //福州市
+				                    {name: "鼓楼区", value: 9},
+				                    {name: "仓山区", value: 12},
+				                    {name: "长乐市", value: 12},
+				                    {name: "福清市", value: 12},
+				                    {name: "晋安区", value: 14},
+				                    {name: "连江县", value: 15},
+				                    {name: "罗源县", value: 16},
+				                    {name: "马尾区", value: 18},
+				                    {name: "闽清县", value: 18} ,
+				                    {name: "平潭县", value: 12},
+				                    {name: "台江区", value: 12},
+				                    {name: "永泰县", value: 14},
+				                    {name: "闽侯县", value: 14},
+				                    
+				                    
+				                    
+				                    //厦门市
+				                    {name: "海沧区", value: 9},
+				                    {name: "湖里区", value: 12},
+				                    {name: "集美区", value: 12},
+				                    {name: "思明区", value: 12},
+				                    {name: "同安区", value: 14},
+				                    {name: "翔安区", value: 15},
+				                    
+				                    
+				                    //莆田市
+				                    {name: "城厢区", value: 9},
+				                    {name: "涵江区", value: 12},
+				                    {name: "荔城区", value: 12},
+				                    {name: "仙游县", value: 12},
+				                    {name: "秀屿区", value: 14},
+				                    
+				                    //三明市
+				                    {name: "大田县", value: 9},
+				                    {name: "建宁县", value: 12},
+				                    {name: "将乐县", value: 12},
+				                    {name: "梅列区", value: 12},
+				                    {name: "明溪县", value: 14},
+				                    {name: "宁化县", value: 15},
+				                    {name: "清流县", value: 16},
+				                    {name: "三元区", value: 18},
+				                    {name: "沙县", value: 18} ,
+				                    {name: "泰宁县", value: 12},
+				                    {name: "永安市", value: 12},
+				                    {name: "尤溪县", value: 14},
+				                    
+				                    
+				                    //泉州市
+				                    {name: "泉港区", value: 9},
+				                    {name: "石狮市", value: 12},
+				                    {name: "安溪县", value: 12},
+				                    {name: "德化县", value: 12},
+				                    {name: "丰泽区", value: 14},
+				                    {name: "惠安县", value: 15},
+				                    {name: "金门县", value: 16},
+				                    {name: "晋江市", value: 18},
+				                    {name: "鲤城区", value: 18} ,
+				                    {name: "洛江区", value: 12},
+				                    {name: "南安市", value: 12},
+				                    {name: "永春县", value: 14},
+				                    
+				                    //漳州市
+				                    {name: "云霄县", value: 9},
+				                    {name: "长泰县", value: 12},
+				                    {name: "东山县", value: 12},
+				                    {name: "华安县", value: 12},
+				                    {name: "龙海市", value: 14},
+				                    {name: "龙文区", value: 15},
+				                    {name: "南靖县", value: 16},
+				                    {name: "平和县", value: 18},
+				                    {name: "漳浦县", value: 18} ,
+				                    {name: "诏安县", value: 12},
+				                    {name: "芗城区", value: 12},
+				                    
+				                    //龙岩市
+				                    {name: "长汀县", value: 9},
+				                    {name: "连城县", value: 12},
+				                    {name: "上杭县", value: 12},
+				                    {name: "武平县", value: 12},
+				                    {name: "新罗区", value: 14},
+				                    {name: "永定县", value: 15},
+				                    {name: "漳平市", value: 16},
+				                    
+				                    //宁德市
+				                    {name: "福安市", value: 9},
+				                    {name: "福鼎市", value: 12},
+				                    {name: "古田县", value: 12},
+				                    {name: "屏南县", value: 12},
+				                    {name: "寿宁县", value: 14},
+				                    {name: "霞浦县", value: 15},
+				                    {name: "周宁县", value: 16},
+				                    {name: "柘荣县", value: 18},
+				                    {name: "蕉城区", value: 18},
+				                    
+				                    
+				                    
+				                    //南平市
+				                    {name: "光泽县", value: 9},
+				                    {name: "建阳市", value: 12},
+				                    {name: "建瓯市", value: 12},
+				                    {name: "浦城县", value: 12},
+				                    {name: "邵武市", value: 14},
+				                    {name: "顺昌县", value: 15},
+				                    {name: "松溪县", value: 16},
+				                    {name: "武夷山市", value: 18},
+				                    {name: "延平区", value: 18} ,
+				                    {name: "政和县", value: 12}  */
+				                ]
+				            },
+				            geoCoord : {            
+				                "福州市": {x: 119.280704375, y: 26.000112},    
+				                "厦门市": {x: 118.140514, y: 24.509429}, 
+				                "莆田市": {x: 118.967203398438, y: 25.5779982734376}, 
+				                "三明市": {x: 117.833350859375, y: 26.1298488593751}, 
+				                "泉州市": {x: 118.600446, y: 24.89181}, 
+				                "漳州市": {x: 117.652985, y: 24.526262}, 
+				                "南平市": {x: 118.186507, y:26.665776 }, 
+				                "龙岩市": {x: 117.018279, y: 25.130717}, 
+				                "宁德市": {x: 119.650152617188, y: 26.738843},
+				                
+				                 
+								 
+				                "鼓楼区": {x: 119.308455, y: 26.088865},    
+				                "仓山区": {x: 119.277122, y: 26.054074}, 
+				                "长乐市": {x: 119.531522, y: 25.970172}, 
+				                "福清市": {x: 119.390093, y: 25.727215}, 
+				                "晋安区": {x: 119.33835, y: 26.087567}, 
+				                "连江县": {x: 119.559118, y: 26.220401}, 
+				                "罗源县": {x: 119.552219, y: 26.494923 }, 
+				                "马尾区": {x: 119.463107, y: 25.996414}, 
+				                "闽清县": {x: 118.858008, y: 26.228439},        
+				                "平潭县": {x: 119.793971, y: 25.505411},    
+				                "台江区": {x: 119.322684, y: 26.059333},
+				                "永泰县": {x: 118.93979, y:  25.878992},
+				                "闽侯县": {x: 119.132732, y: 26.157788},
+				                
+				                
+				                "海沧区": {x: 118.026824, y: 24.494764},    
+				                "湖里区": {x: 118.149856, y: 24.524223}, 
+				                "集美区": {x: 118.094664, y: 24.590482}, 
+				                "思明区": {x: 118.111912, y: 24.448456}, 
+				                "同安区": {x: 118.152156, y: 24.733395}, 
+				                "翔安区": {x: 118.248741, y: 24.625174},
+				                
+				                
+				                "城厢区": {x: 118.998431, y: 25.424053},    
+				                "涵江区": {x: 119.123763, y: 25.465294}, 
+				                "荔城区": {x: 119.024303, y: 25.438671}, 
+				                "仙游县": {x: 118.694301, y: 25.372351}, 
+				                "秀屿区": {x: 119.11169, y: 25.32324},
+								
+								
+								"大田县": {x: 117.853775, y: 25.704103},    
+				                "建宁县": {x: 116.851122, y: 26.844429}, 
+				                "将乐县": {x: 117.462832, y: 26.737104}, 
+				                "梅列区": {x: 117.651404, y: 26.277885}, 
+				                "明溪县": {x: 117.213031, y: 26.369851}, 
+				                "宁化县": {x: 116.654213, y: 26.282809}, 
+				                "清流县": {x: 116.838186, y: 26.183251}, 
+				                "三元区": {x: 117.615185, y: 26.240171}, 
+				                "沙县": {x: 117.79772, y: 26.40131},        
+				                "泰宁县": {x: 117.177961, y: 26.909652},    
+				                "永安市": {x: 117.368258, y: 25.948927},
+				                "尤溪县": {x: 118.189238, y: 26.177934},
+								
+								
+								"泉港区": {x: 118.92283, y: 25.12895},    
+				                "石狮市": {x: 118.650895, y: 24.735233}, 
+				                "安溪县": {x: 118.190962, y: 25.063506}, 
+				                "德化县": {x: 118.236381, y: 25.49778}, 
+				                "丰泽区": {x: 118.619849, y: 24.895154}, 
+				                "惠安县": {x: 118.798936, y: 25.036926}, 
+				                "金门县": {x: 118.376948, y: 24.452009}, 
+				                "晋江市": {x: 118.556321, y: 24.788913}, 
+				                "鲤城区": {x: 118.590529, y: 24.914293},        
+				                "洛江区": {x: 118.676191, y: 24.946798},    
+				                "南安市": {x: 118.392183, y: 24.965667},
+				                "永春县": {x: 118.304796, y: 25.326245},
+								
+								
+								
+								"云霄县": {x: 117.344687, y: 23.9674},    
+				                "长泰县": {x: 117.768974, y: 24.632401}, 
+				                "东山县": {x: 117.447022, y: 23.71143}, 
+				                "华安县": {x: 117.539008, y: 25.009161}, 
+				                "龙海市": {x: 117.823017, y: 24.455693}, 
+				                "龙文区": {x: 117.709758, y: 24.511467}, 
+				                "南靖县": {x: 117.356185, y: 24.524092 }, 
+				                "平和县": {x: 117.317091, y: 24.371458}, 
+				                "漳浦县": {x: 117.603399, y: 24.124746},        
+				                "诏安县": {x: 117.177961, y: 23.720959},    
+				                "芗城区": {x: 117.638181, y: 24.583779},
+								
+								
+								
+								"长汀县": {x: 116.344001, y: 25.848319},    
+				                "连城县": {x: 116.75794, y: 25.700474}, 
+				                "上杭县": {x: 116.399193, y: 25.067452}, 
+				                "武平县": {x: 116.086438, y: 25.109339}, 
+				                "新罗区": {x: 117.045398, y: 25.109339}, 
+				                "永定县": {x: 116.730344, y: 24.732887}, 
+				                "漳平市": {x: 117.411044, y: 25.3196 },
+				                
+				                
+				                
+				                "福安市": {x: 119.645166, y: 27.094302},    
+				                "福鼎市": {x: 120.222381, y: 27.325624}, 
+				                "古田县": {x: 118.782792, y: 26.58783}, 
+				                "屏南县": {x: 118.980563, y: 26.916112}, 
+				                "寿宁县": {x: 119.518684, y: 27.469313}, 
+				                "霞浦县": {x: 119.992415, y: 26.893432}, 
+				                "周宁县": {x: 119.332412, y: 27.117971}, 
+				                "柘荣县": {x: 119.894679, y: 27.247543},
+				                "蕉城区": {x: 119.465482, y: 26.768252},
+				                
+				                
+				                "光泽县": {x: 117.336305, y: 27.551335},    
+				                "建阳市": {x: 118.131988, y: 27.33384}, 
+				                "建瓯市": {x: 118.309062, y: 27.031505}, 
+				                "浦城县": {x: 118.548227, y: 27.929884}, 
+				                "邵武市": {x: 117.50188, y: 27.35027}, 
+				                "顺昌县": {x: 117.816934, y:26.808855}, 
+				                "松溪县": {x: 118.794291, y: 27.539036 }, 
+				                "武夷山市": {x: 118.012405, y: 27.770442}, 
+				                "延平区": {x:118.247119, y: 26.596875},        
+				                "政和县": {x: 118.864866, y: 27.376321} 
+				            }  
+						} 
+					]
+				};
+					myChart.setOption(option, true);
+            }
+        ); 
+    </script>
+	
+</body>

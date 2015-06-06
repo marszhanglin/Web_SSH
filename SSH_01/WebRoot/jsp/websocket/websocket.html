@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Testing websockets</title>
+</head>
+<body>
+  <div>
+    <input type="submit" value="Start" onclick="start()" />
+  </div>
+  <div id="messages"></div> 
+  <script type="text/javascript">
+  /* if(window.WebSocket){
+	  alert(window.WebSocket);
+  }else{
+	  alert(window.WebSocket);
+  } */
+  
+    var webSocket =
+      new WebSocket('ws://192.168.3.43:8081/SSH_01/websocket');
+ 
+    webSocket.onerror = function(event) {
+      onError(event)
+    };
+ 
+    webSocket.onopen = function(event) {
+      onOpen(event)
+    };
+ 
+    webSocket.onmessage = function(event) {
+      onMessage(event)
+    };
+ 
+    function onMessage(event) {
+      document.getElementById('messages').innerHTML
+        += '<br />' + event.data;
+    }
+ 
+    function onOpen(event) {
+      document.getElementById('messages').innerHTML
+        = '成功连接服务器端！';
+    }
+ 
+    function onError(event) {
+      alert(event.data);
+    }
+ 
+    function start() {
+      webSocket.send('你好！服务器');
+      return false;
+    }
+  </script>
+</body>
+</html>

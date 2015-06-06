@@ -1,0 +1,4 @@
+.tool{width:50px; height:600px; background:url(../image/bg2.jpg) no-repeat;padding:25px 0 0 11px}
+.tool img{ float:left}
+.tool a{margin-bottom:8px; display:block; float:left}
+.tool a:hover{position:relative; top:1px; left:1px}

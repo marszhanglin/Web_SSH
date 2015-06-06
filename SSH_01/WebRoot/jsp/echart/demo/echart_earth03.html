@@ -1,0 +1,125 @@
+﻿<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title>ECharts</title>
+</head>
+<body> 
+    <div id="main" style="height:600px ;width: 1000px;"></div>  
+    <script src="./dist/echarts.js" charset="UTF-8"></script>
+	 <script src="./asset/js/jquery.min.js"></script>
+    <script type="text/javascript"> 
+        require.config({
+            paths: {
+                echarts: './dist',
+				'echarts/chart/map':'./dist/chart/map'  
+            }
+        });  
+        require(
+            [
+                'echarts',
+                'echarts/chart/map'  
+            ],
+            function (ec) {
+                var myChart = ec.init(document.getElementById('main'),'mint');  
+				
+				 var cityMap = { 
+					"福州市": "350100",
+					"厦门市": "350200",
+					"莆田市": "350300",
+					"三明市": "350400",
+					"泉州市": "350500",
+					"漳州市": "350600",
+					"南平市": "350700",
+					"龙岩市": "350800",
+					"宁德市": "350900" 
+				};
+
+
+				var curIndx = 0;
+				var mapType = [];
+				var mapGeoData = require('echarts/util/mapData/params');
+				console.log(mapGeoData)
+				for (var city in cityMap) {
+					mapType.push(city);
+					// 自定义扩展图表类型
+					mapGeoData.params[city] = {
+						getGeoJson: (function (c) {
+							var geoJsonName = cityMap[c];
+							return function (callback) {
+								$.getJSON('geoJson/china-main-city/' + geoJsonName + '.json', callback);
+							}
+						})(city)
+					}
+				}
+
+				var ecConfig = require('echarts/config');
+				var zrEvent = require('zrender/tool/event');
+				/* document.getElementById('main').onmousewheel = function (e){
+					var event = e || window.event;
+					curIndx += zrEvent.getDelta(event) > 0 ? (-1) : 1;
+					if (curIndx < 0) {
+						curIndx = mapType.length - 1;
+					}
+					var mt = mapType[curIndx % mapType.length];
+					option.series[0].mapType = mt;
+					option.title.subtext = mt + ' （滚轮或点击切换）';
+					myChart.setOption(option, true);
+					zrEvent.stop(event);
+				}; */
+				myChart.on(ecConfig.EVENT.MAP_SELECTED, function (param){
+					var selected = param.target;
+					var hasincitys=false;
+					for(var i=0;i<mapType.length;i++){
+						 if(mapType[i]===selected){
+							 	option.series[0].mapType =selected;
+								myChart.setOption(option, true);
+								hasincitys=true;
+								break;
+						 }
+					}
+					if(hasincitys===false){
+						option.series[0].mapType ="福建";
+						myChart.setOption(option, true);
+					}
+					/* if(selected!="福建"){ 
+						option.series[0].mapType ="莆田市";
+						myChart.setOption(option, true);
+					}else{
+						option.series[0].mapType ="福建";
+						myChart.setOption(option, true);
+					}  */
+					/* curIndx++;
+					var mt = mapType[curIndx % mapType.length];
+					option.series[0].mapType = mt;
+					option.title.subtext = mt + ' （滚轮或点击切换）';
+					myChart.setOption(option, true); */
+				});
+				option = {
+					title: {
+						text : '福建省1', 
+						subtext : '各个市1(县)'
+					},
+					tooltip : {
+						trigger: 'item',
+						formatter: '当前城市<br/>{b}'
+					},
+					series : [
+						{
+							name: '福建省主要城市（县）地图',
+							type: 'map',
+							mapType: '福建',
+							selectedMode : 'single',
+							itemStyle:{
+								normal:{label:{show:true}},
+								emphasis:{label:{show:true}}
+							},
+							data:[]
+						}
+					]
+				};
+					myChart.setOption(option, true);
+            }
+        ); 
+    </script>
+	
+</body>

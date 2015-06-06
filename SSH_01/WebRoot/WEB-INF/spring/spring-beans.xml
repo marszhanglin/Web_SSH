@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+     <beans xmlns="http://www.springframework.org/schema/beans"  
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+       xmlns:context="http://www.springframework.org/schema/context"  
+       xmlns:aop="http://www.springframework.org/schema/aop"  
+       xmlns:tx="http://www.springframework.org/schema/tx"  
+       xsi:schemaLocation="http://www.springframework.org/schema/beans  
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd  
+           http://www.springframework.org/schema/context  
+           http://www.springframework.org/schema/context/spring-context-2.5.xsd  
+           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd  
+           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">  
+<!-- 1:配置注解的自动的扫描范围 -->
+     	 		<!--  <context:component-scan base-package="text.spring"></context:component-scan>  -->
+     	  
+<!-- 2定时器start-->
+				<!-- 普通javabean -->
+		     	 <bean id="zntask" class="text.spring.util.springSetTimrOutText"></bean>
+		     	<!-- 定时器那个bean的那个方法执行 -->  
+				<bean id="ZntaskTopSaleJobDetail"
+					class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+					<property name="targetObject" ref="zntask"></property>
+					<property name="targetMethod" value="dosomething"></property>
+				</bean> 
+				<!-- 定时器时间配置 -->
+				<bean id="zntaskTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+					<property name="jobDetail">
+						<ref bean="ZntaskTopSaleJobDetail" />
+					</property>
+					<property name="cronExpression">
+						<value>* 5 * * * ? </value>
+					</property>
+				</bean> 
+				<!-- 所有定时器注册位置 -->
+				<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean"> 
+				  <property name="triggers"> 
+				<list> 
+				<ref bean="zntaskTrigger"/> 
+				</list>  
+				  </property> 
+				</bean>   
+<!-- 2定时器 end-->
+
+<!-- 3mina start-->
+					<!-- 这里是那个自定义的类    业务类操作数据库等  把他放在handler内提供调用-->
+				 <bean id="dosomethingspringid" class="test.DoSomeThing"></bean>
+				 
+				 <!-- 自定义的serverHandler -->
+				 <bean id="serverHandler" class="mina.handler.MyMinaHandler">
+				  <property name="dosomethingParamName" ref="dosomethingspringid"></property>
+				 </bean>
+				 <!-- 自定义的编码过滤器 
+				 <bean id="myCodecFilter" class="org.apache.mina.filter.codec.ProtocolCodecFilter">
+				  <constructor-arg>
+				   <bean class="mina.codeFactory.MyCodeFactory" />
+				  </constructor-arg>
+				 </bean>-->
+				 <!-- 指定服务端地址和端口 -->
+				 <bean id="address" class="java.net.InetSocketAddress">
+				  <constructor-arg index="0" value="192.168.1.113"/>
+				  <constructor-arg index="1" value="10000"/>
+				 </bean>
+				 <!-- 日志filter -->
+				 <bean id="loggingFilter" class="org.apache.mina.filter.logging.LoggingFilter" />
+				 <!-- 
+				 <bean id="executorFilter" class="org.apache.mina.filter.executor.ExecutorFilter" />
+				 <bean id="mdcInjectionFilter" class="org.apache.mina.filter.logging.MdcInjectionFilter">
+				  <constructor-arg value="remoteAddress" />
+				 </bean> -->
+				 
+				 <bean id="codecFilter" class="org.apache.mina.filter.codec.ProtocolCodecFilter">
+				  <constructor-arg>
+				   <!--  <bean class="org.apache.mina.filter.codec.textline.TextLineCodecFactory" /> -->
+				   <!-- 自定义的字符编码类 -->
+				   <bean class="org.apache.mina.filter.codec.textline.TextLineCodecFactory"></bean>
+				  </constructor-arg>
+				 </bean>
+				 <!-- 过滤器链 -->
+				 <bean id="filterChainBuilder" class="org.apache.mina.core.filterchain.DefaultIoFilterChainBuilder">
+				  <property name="filters">
+				   <map>
+				   <!-- 
+				    <entry key="executor" value-ref="executorFilter" />
+				    <entry key="mdcInjectionFilter" value-ref="mdcInjectionFilter" />
+				     -->
+				    <entry key="codecFilter" value-ref="codecFilter" />
+				    <!-- <entry key="loggingFilter" value-ref="loggingFilter" /> -->
+				   </map>
+				  </property>
+				 </bean>
+				  
+				 <!--第一种方式启动mina  开始运行socket服务 可以参考main项目spring帮我们完成了这步-->
+				 <!-- <bean id="ioAcceptor" class="org.apache.mina.transport.socket.nio.NioSocketAcceptor" 
+				  init-method="bind" destroy-method="unbind">
+				  <property name="defaultLocalAddress" ref="address" />
+				  <property name="handler" ref="serverHandler" />
+				  <property name="filterChainBuilder" ref="filterChainBuilder" />
+				  <property name="reuseAddress" value="true" />
+				 </bean> -->
+<!-- 3mina end-->
+
+</beans>  
